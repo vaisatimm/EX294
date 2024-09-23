@@ -25,3 +25,68 @@ redhat9
 192.168.[0:255].1
 
 Here we have 256 subnets, and the first ip will always be a switch. 192.168.0.1 ---> 192.168.255.1
+
+---
+
+ansible-navigato inventory -i my_inventory/ -m stdout --list    #command to list the server in the inventory.
+"_meta": {
+  "hostvars": {}
+},
+"all": {
+  "children": [
+    "dbservers",
+    "lbservers",
+    "rhel",
+    "routers",
+    "switches",
+    "ungrouped",
+    "webservers",
+    "windows"
+  ]
+},
+"dbservers": {
+  "hosts": [
+    "serverd.lab.example.com"
+  ]
+},
+"lbservers": {
+  "hosts": [
+    "servera.lab.example.com"
+  ]
+},
+"rhel": {
+  "children": [
+    "rhel8"
+  ]
+},
+
+all: is an implicit group, and indicate all the hosts in the inventory
+ungrouped: all the hosts that are not part of a group
+
+We can print a graph of the inventory: 
+
+ansible-navigator inventory -i my_inventory/ -m stdout --graph all
+
+If I have an ansible config file I don't have to specify where the inventory is. 
+
+If I want to be more specific I can use the path where a sub inventory is:
+
+ansible-navigator inventory -i my_inventory/dev/linux -m stdout --graph
+
+If I want to specify just one group inside a sub inventory: 
+
+ansible-navigator inventory -i my_inventory/dev/linux -m stdout --graph rhel 
+
+We can show what variables are associated to that host inside the inventory. The {} indicates that there are no variables associated to that host.
+
+ansible-navigator inventory -i my_inventory/dev/linux -m stdout --host servera.lab.example.com
+{}
+
+To show the ungrouped hosts: 
+
+ansible-navigator inventory -i my_inventory/dev/linux -m stdout --graph
+
+
+
+
+
