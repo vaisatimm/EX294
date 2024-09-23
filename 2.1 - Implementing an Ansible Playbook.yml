@@ -1,1 +1,27 @@
 Playbook
+
+
+In inventory we have groups:
+
+[redhat8]
+
+server[a:b].lab.example.com
+
+[redhat9]
+
+server[c:d].lab.example.com
+
+You can add the same server to many groups.
+
+Nested groups: nested groups: groups of groups (indicated with :children)
+
+[rhel:children]
+redhat8
+redhat9 
+
+---
+
+[switches]
+192.168.[0:255].1
+
+Here we have 256 subnets, and the first ip will always be a switch. 192.168.0.1 ---> 192.168.255.1
