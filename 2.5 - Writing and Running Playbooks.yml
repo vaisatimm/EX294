@@ -18,10 +18,113 @@ IMPORTANT: collections are inside the EEI, execution environment image.
 
 To see all the collections inside the EE: 
 
-$ ansible-navigator collections list
+$ ansible-navigator collections list    #collection inside the execution environment
 
 Remember that ansible-navigator command transacts against the execution environment that you've set inside of 
 your ansible-navigator.yaml configuration file. 
 
+In playbook, the yaml is made of tasks, that are a list, which is denotated with "-"
+EXAMPLE: 
+https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html#examples
 
+- name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+  ansible.builtin.user:
+    name: johnd
+    comment: John Doe
+    uid: 1040
+    group: admin
+
+- name: Create a user 'johnd' with a home directory
+  ansible.builtin.user:
+    name: johnd
+    create_home: yes
+
+- name: Add the user 'james' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+  ansible.builtin.user:
+    name: james
+    shell: /bin/bash
+    groups: admins,developers
+    append: yes
+
+- name: Remove the user 'johnd'
+  ansible.builtin.user:
+    name: johnd
+    state: absent
+    remove: yes
+
+[...] #CONTINUES AT THE LINK 
+
+You do not need to encapsulate the names of tasks inside duoble quotes. 
+
+The module name is always implemented as a dictionary (e.g. "ansible.builtin.user:"), 
+and all the options of that module are implemented as key-value pairs
+
+e.g.: 
+
+    name: johnd
+    state: absent
+    remove: yes
+
+To see the docs related to a module: 
+
+$ ansible-navigator doc ansible.builtin.user -m stdout 
+#THIS IS THE OUTPUT OF THE COMMAND ABOVE
+{
+> ANSIBLE.BUILTIN.USER    (/usr/local/lib/python3.8/site-packages/ansible/modules/user.py)
+
+        Manage user accounts and user attributes. For Windows targets, use the [ansible.windows.win_user] module instead.
+
+ADDED IN: version 0.2 of ansible-core
+
+OPTIONS (= is mandatory):
+
+- append
+        If `yes', add the user to the groups specified in `groups'.
+        If `no', user will only be added to the groups specified in `groups', removing them from all other groups.
+        [Default: False]
+        type: bool
+
+- authorization
+        Sets the authorization of the user.
+        Does nothing when used with other platforms.
+        Can set multiple authorizations using comma separation.
+        To delete all authorizations, use `authorization='''.
+        Currently supported on Illumos/Solaris.
+        [Default: (null)]
+        type: str
+        added in: version 2.8 of ansible-core
+
+
+- comment
+        Optionally sets the description (aka `GECOS') of user account.
+        [Default: (null)]
+        type: str
+
+- create_home
+        Unless set to `no', a home directory will be made for the user when the account is created or if the home directory does not exist.
+        Changed from `createhome' to `create_home' in Ansible 2.5.
+        (Aliases: createhome)[Default: True]
+        type: bool
+
+} #ETC ETC, IT CONTINUES THE OUTPUT. 
+
+If you want to see all the modules inside the EE: 
+
+$ ansible-navigator doc -m stdout -l
+
+⇣ default ⎈ [23:37:40]:root.vmi1537861:~# ansible-navigator doc -m stdout -l
+[WARNING]: Collection redhatinsights.insights does not support Ansible version 2.13.4
+add_host                                     Add a host (and alternatively a group) to the ansible-playbook in-memory inventory
+ansible.posix.acl                            Set and retrieve file ACL information
+ansible.posix.at                             Schedule the execution of a command or script file via the at command
+ansible.posix.authorized_key                 Adds or removes an SSH authorized key
+ansible.posix.firewalld                      Manage arbitrary ports/services with firewalld
+ansible.posix.firewalld_info                 Gather information about firewalld
+ansible.posix.mount                          Control active and configured mount points
+ansible.posix.patch                          Apply patch files using the GNU patch tool
+ansible.posix.seboolean                      Toggles SELinux booleans
+ansible.posix.selinux                        Change policy and state of SELinux
+ansible.posix.synchronize                    A wrapper around rsync to make common tasks in your playbooks quick and easy
+ansible.posix.sysctl                         Manage entries in sysctl.conf
+[...output omitted]
 
