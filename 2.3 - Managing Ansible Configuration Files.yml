@@ -1,0 +1,16 @@
+Mapping of old and new commands
+
+ansible.cfg --> ansible   
+                ansible-playbook  --> ansible-navigator run 
+                ansible-inventory --> ansible-navigator inventory 
+                ansible-config    --> ansible-navigator config 
+
+ansible-navigator makes use of an EE (execution environment, "a container")
+
+Inside this environment all the containers will be exectuted. 
+
+So the ansible-navigator command will spin up container and inside that container all the command will be launched. 
+
+ansible-navigator.yml changes default option for the ansible-navigator command. 
+
+
