@@ -271,3 +271,43 @@ tasks:
       name: httpd   #software to check
       state: latest #the version to have, if it is not present then install it
 
+Let's take the following example: 
+
+- name: Ensure stub content is deployed
+  ansible.builtin.copy:
+    content: >
+      "Hello world,
+      I am a web server"
+    dest: /var/www/html/index.html
+
+if you want to break a long line in multiple lines that will be reconstructed
+as a single line you have to use the ">" sign like after the word "content" in the 
+example before. 
+If you want to preserve the multiple line that you have to use the pipe | sign 
+after the "content:", like this, "content: | "
+
+Since a playbook is a list of plays, one play can target one inventory host, and 
+another play can target another inventory host. 
+
+So the structure of a playbook is: 
+
+- name: Name of the 1st play 
+  hosts: [...] 
+  tasks: 
+    - name: task1 
+    [...]
+    - name: task2
+    [...]
+...
+    - name: taskn 
+    [...]
+-name: Name of the 2nd play 
+  hosts: [...] 
+  tasks: 
+    - name: task1 
+    [...]
+    - name: task2
+    [...]
+...
+    - name: taskn 
+    [...]
