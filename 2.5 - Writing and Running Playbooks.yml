@@ -262,5 +262,12 @@ tasks è una chiave con una lista di dizionari.
 Ogni dizionario nella lista rappresenta un compito (task).
 Ogni compito può avere ulteriori dettagli rappresentati da sotto-dizionari.
 In altre parole, la struttura è annidata: una lista di dizionari (i task), ognuno dei quali contiene sotto-dizionari per descrivere i dettagli di come quel task deve essere eseguito.
+
 #continuazione lezione: 
+
+tasks:
+  - name: Ensure httpd is installed
+    ansible.builtin.dnf:  #module to use
+      name: httpd   #software to check
+      state: latest #the version to have, if it is not present then install it
 
