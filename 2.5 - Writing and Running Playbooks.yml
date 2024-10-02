@@ -1,0 +1,27 @@
+Example of a task inside a playbook:
+
+--- 
+- name: Configure important user consistentely
+  host: servera.lab.example.com
+  task: 
+    - name: Newbie exists with UID 4000
+      ansible.builtin.user: 
+        name: newbie 
+        uid: 4000
+        state: present 
+
+IMPORTANT: modules comes from collections, and the collections are installed inside: 
+
+/usr/share/ansible/collections/ansible_collections/redhat
+
+IMPORTANT: collections are inside the EEI, execution environment image. 
+
+To see all the collections inside the EE: 
+
+$ ansible-navigator collections list
+
+Remember that ansible-navigator command transacts against the execution environment that you've set inside of 
+your ansible-navigator.yaml configuration file. 
+
+
+
