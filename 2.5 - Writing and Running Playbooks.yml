@@ -128,3 +128,139 @@ ansible.posix.synchronize                    A wrapper around rsync to make comm
 ansible.posix.sysctl                         Manage entries in sysctl.conf
 [...output omitted]
 
+or you can reference a particular module with: 
+
+$ ansible-navigator doc -m stdout -l ansible.posix.selinux  
+
+Inside of my ansible.cfg we could have: 
+
+cat ansible.cfg
+
+[defaults]
+inventory = ./my_inventory/
+remote_user=devops  #the user that we are going to use to connect to the inventory hosts
+
+IMPORTANT: it can be a best practice to disable the privilege exalation at the level
+of the ansible.cfg and enable it just inside the playbook if it is needed:
+
+e.g. (this is a playbook):
+
+---
+- name: Ensure webservers are installed 
+  hosts: servera 
+  become: true #this is were we enable the become root at playbook level
+
+  tasks: 
+    - name: Ensure that httpd is installed
+      ansible.builtin.dnf:
+        name: httpd 
+        state: latest 
+
+Tasks inside the yaml is implemented as dictionary with "-" sign for each task name. 
+A dictionary can consist of key-value pairs or of other dictionaries. 
+
+
+#SPIEGAZIONE CHATGPT: 
+
+Mia domanda:
+
+Quindi employees e skills sono chiavi, non sono liste loro stesse
+ChatGPT said:
+ChatGPT
+Esattamente, hai ragione.
+
+In questo YAML:
+
+yaml
+Copy code
+employees:
+  - name: Alice
+    age: 25
+    position: Data Analyst
+    skills:
+      - Python
+      - Data Analysis
+  - name: Bob
+    age: 30
+    position: Project Manager
+    skills:
+      - Project Management
+      - Java
+employees è una chiave che ha come valore una lista di elementi. Quindi employees non è una lista in sé, ma la chiave che punta a una lista di dizionari.
+
+skills è anch'essa una chiave all'interno di ogni dizionario che rappresenta un impiegato. Ha come valore una lista di competenze (es. "Python" e "Data Analysis" per Alice). Quindi skills non è una lista di per sé, ma una chiave il cui valore è una lista.
+
+Riassumendo:
+
+employees è una chiave che punta a una lista di dizionari.
+Ogni dizionario rappresenta un impiegato con diverse proprietà.
+skills è una chiave all'interno di ciascun dizionario e il valore associato è una lista di competenze.
+La distinzione tra chiavi e liste è importante perché le chiavi descrivono cosa rappresentano i valori, mentre i valori possono essere di vari tipi, come liste o altri dizionari.
+
+COSA IMPORTANTE: una lista è un insieme valori o un dizionario che è un insieme di chiavi-valore 
+employees:
+  - name: Alice
+    age: 25
+    position: Data Analyst
+  - name: Bob
+    age: 30
+    position: Project Manager
+Qui, employees è una chiave che punta a una lista di dizionari. Ogni elemento della lista è un dizionario che rappresenta un impiegato con più chiavi e valori (name, age, position).
+Una chiave di un dizionario, può avere due o più sotto chiavi-valore come nel seguente esempio: 
+
+tasks:
+  - name: Ensure httpd is installed
+    ansible.builtin.dnf:
+      name: httpd
+      state: latest
+  - name: Ensure webserver is enabled
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: true
+
+
+Però all'interno dei dizionarii ci sono dei sotto-dizionari?
+ChatGPT said:
+ChatGPT
+Esatto, hai ragione! All'interno dei dizionari nella lista di tasks, ci sono effettivamente dei sotto-dizionari. Vediamo questo più in dettaglio usando l'esempio che hai fornito:
+
+yaml
+Copy code
+tasks:
+  - name: Ensure httpd is installed
+    ansible.builtin.dnf:
+      name: httpd
+      state: latest
+  - name: Ensure webserver is enabled
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: true
+Struttura Analizzata
+tasks:
+
+È una chiave che ha come valore una lista di dizionari.
+Lista di dizionari (elementi della lista sotto tasks):
+
+Ogni elemento della lista rappresenta un dizionario che descrive un compito specifico.
+Sotto-dizionari:
+
+Ogni dizionario contiene diverse chiavi:
+name: Una chiave che descrive il nome del task.
+ansible.builtin.dnf e ansible.builtin.service:
+Queste sono chiavi che hanno come valore un sotto-dizionario.
+Questi sotto-dizionari specificano i dettagli del modulo da usare. Ad esempio:
+yaml
+Copy code
+ansible.builtin.dnf:
+  name: httpd
+  state: latest
+Qui, ansible.builtin.dnf è una chiave il cui valore è un sotto-dizionario con ulteriori chiavi e valori, come name e state, che specificano i parametri per l'azione da eseguire.
+Riepilogo
+tasks è una chiave con una lista di dizionari.
+Ogni dizionario nella lista rappresenta un compito (task).
+Ogni compito può avere ulteriori dettagli rappresentati da sotto-dizionari.
+In altre parole, la struttura è annidata: una lista di dizionari (i task), ognuno dei quali contiene sotto-dizionari per descrivere i dettagli di come quel task deve essere eseguito.
+#continuazione lezione: 
+
