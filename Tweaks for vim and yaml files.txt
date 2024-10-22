@@ -1,0 +1,5 @@
+[student@workstation data-review]$ git clone https://gitlab.com/rgdacosta/classroom_env
+
+cd classroom_dev
+
+ansible-playbook playbook.yml
